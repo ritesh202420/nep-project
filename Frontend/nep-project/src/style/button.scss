@@ -1,0 +1,18 @@
+.button {
+  width: 100%;
+  height: 3rem;
+  border: none;
+  outline: none;
+  border-radius: 1.25rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all,0.3s,ease-in-out;
+
+  &.primary-button {
+    background-color: #e1044d;
+    color: white;
+  }
+  &:active{
+    transform: scale(1.1);
+  }
+}
