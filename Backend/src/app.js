@@ -5,23 +5,17 @@ const cors = require("cors");
 
 const app = express();
 
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://YOUR-NETLIFY-SITE.netlify.app",
-];
+app.use(cors({
+  origin: "https://nepproject.netlify.app",
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+}));
 
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true,
-  })
-);
+app.options(/.*/, cors({
+  origin: "https://nepproject.netlify.app",
+  credentials: true,
+}));
 
 app.use(cookieParser());
 app.use(express.json());
