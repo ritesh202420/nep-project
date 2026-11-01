@@ -4,11 +4,11 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const tokenBlacklistModel = require("../models/balcklist.model");
 
-// Cookie configuration
+// Cookie configuration for Netlify + Render
 const cookieOptions = {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
+    secure: true,
+    sameSite: "none",
     maxAge: 24 * 60 * 60 * 1000,
     path: "/",
 };
@@ -16,7 +16,7 @@ const cookieOptions = {
 // Generate JWT token
 function generateToken(userId) {
     if (!process.env.JWT_SECRET) {
-        throw new Error("JWT_SECRET is missing in .env");
+        throw new Error("JWT_SECRET is missing in environment variables");
     }
 
     return jwt.sign(
@@ -92,15 +92,15 @@ async function registerUsercontroller(req, res) {
     } catch (error) {
         console.error("Registration error:", error);
 
-        // Handle MongoDB duplicate-key errors
         if (error.code === 11000) {
             const field = Object.keys(error.keyPattern || {})[0];
 
             return res.status(409).json({
                 success: false,
-                message: field === "email"
-                    ? "User already exists with this email"
-                    : "Username already exists",
+                message:
+                    field === "email"
+                        ? "User already exists with this email"
+                        : "Username already exists",
             });
         }
 
@@ -188,8 +188,8 @@ async function logoutUsercontroller(req, res) {
 
         res.clearCookie("token", {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "lax",
+            secure: true,
+            sameSite: "none",
             path: "/",
         });
 
