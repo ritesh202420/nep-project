@@ -2,7 +2,7 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { useInterview } from '../interview/hook/useInterview'
-import "./Dashboard.scss";
+import "./dashboard.scss";
 
 const Dashboard = () => {
   const {
